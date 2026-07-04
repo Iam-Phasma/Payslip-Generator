@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payslip Generator Dashboard Shell</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="header/header.css">
+  <link rel="stylesheet" href="footer/footer.css">
+  <link rel="stylesheet" href="dashboard/dashboard.css">
+</head>
+<body class="dashboard-page">
+  <div id="header-container"></div>
+
+  <main class="page-content">
+    <div class="dashboard-wrapper" id="dashboard-wrapper">
+      <aside class="dash-sidebar" id="dash-sidebar" aria-label="Main navigation">
+        <div class="dash-sidebar-header">
+          <span class="dash-sidebar-brand">Menu</span>
+          <button class="dash-sidebar-toggle" id="dash-sidebar-toggle" aria-label="Toggle sidebar">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+        </div>
+        <nav class="dash-sidebar-nav" aria-label="Dashboard sections">
+          <button class="dash-sidebar-tab active" data-tab="create" aria-selected="true">
+            <svg class="icon-line" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>
+            <span class="dash-sidebar-label">Create</span>
+          </button>
+          <button class="dash-sidebar-tab" data-tab="function" aria-selected="false">
+            <svg class="icon-line" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 19h16M7 16V8m5 8V5m5 11v-6"/></svg>
+            <span class="dash-sidebar-label">Function</span>
+          </button>
+          <button class="dash-sidebar-tab" data-tab="employees" aria-selected="false">
+            <svg class="icon-line" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span class="dash-sidebar-label">Employees</span>
+          </button>
+          <button class="dash-sidebar-tab" data-tab="users" aria-selected="false">
+            <svg class="icon-line" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="dash-sidebar-label">Users</span>
+          </button>
+        </nav>
+      </aside>
+
+      <section class="dash-content" aria-live="polite">
+        <article class="dash-tab-pane active" id="tab-create">
+          <div class="panel shell-panel">
+            <h2>Create</h2>
+            <p>This tab is intentionally empty for now.</p>
+          </div>
+        </article>
+
+        <article class="dash-tab-pane" id="tab-function">
+          <div class="panel shell-panel">
+            <h2>Function</h2>
+            <p>This tab is intentionally empty for now.</p>
+          </div>
+        </article>
+
+        <article class="dash-tab-pane" id="tab-employees">
+          <div class="panel shell-panel">
+            <h2>Employees</h2>
+            <p>This tab is intentionally empty for now.</p>
+          </div>
+        </article>
+
+        <article class="dash-tab-pane" id="tab-users">
+          <div class="panel shell-panel">
+            <h2>Users</h2>
+            <p>This tab is intentionally empty for now.</p>
+          </div>
+        </article>
+      </section>
+    </div>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script type="module" src="dashboard/dashboard.js"></script>
+</body>
+</html>

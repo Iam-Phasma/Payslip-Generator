@@ -50,16 +50,72 @@
         </article>
 
         <article class="dash-tab-pane" id="tab-function">
-          <div class="panel shell-panel">
-            <h2>Function</h2>
-            <p>This tab is intentionally empty for now.</p>
+          <div class="panel function-panel-shell">
+            <div class="function-panel-head">
+              <div>
+                <h2>Cut Off List</h2>
+                <span class="status">Manage cut-off schedules used across payroll processing.</span>
+              </div>
+              <button id="cutoff-add-btn" class="function-add-btn" type="button">Add Cut Off</button>
+            </div>
+
+            <div class="function-cutoff-list" id="cutoff-list">
+              <div class="function-cutoff-table-header">
+                <span class="function-cutoff-header-tag">Tag</span>
+                <span class="function-cutoff-header-first">First CO</span>
+                <span class="function-cutoff-header-second">Second CO</span>
+                <span class="function-cutoff-header-action">Actions</span>
+              </div>
+              <p class="loading-text">Loading cut off list...</p>
+            </div>
           </div>
         </article>
 
         <article class="dash-tab-pane" id="tab-employees">
-          <div class="panel shell-panel">
-            <h2>Employees</h2>
-            <p>This tab is intentionally empty for now.</p>
+          <div class="employees-panel-head">
+            <h2>Manage Employees</h2>
+            <span class="status">Search and review imported employees from the active directory.</span>
+          </div>
+
+          <div class="employee-list-header">
+            <div class="employee-summary" id="employee-summary">Total: 0 | Active: 0 | Inactive: 0</div>
+
+            <div class="panel-head-actions">
+              <div class="employee-search-wrapper">
+                <input
+                  type="text"
+                  id="employee-search"
+                  class="employee-search-input"
+                  placeholder="Search employees..."
+                  autocomplete="off"
+                />
+              </div>
+              <div class="employee-status-filter-wrap">
+                <select id="employee-status-filter" class="employee-status-filter" aria-label="Filter by status">
+                  <option value="">All statuses</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+              <div class="employee-sort-wrap">
+                <select id="employee-sort-order" class="employee-sort-order" aria-label="Sort employees">
+                  <option value="active-first">Active first, A to Z</option>
+                  <option value="inactive-first">Inactive first, A to Z</option>
+                  <option value="az">Name A to Z</option>
+                  <option value="za">Name Z to A</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="employee-list" id="employee-list">
+            <div class="employee-table-header">
+              <span class="employee-header-name">Name</span>
+              <span class="employee-header-position">Position</span>
+              <span class="employee-header-status">Status</span>
+              <span class="employee-header-action">Actions</span>
+            </div>
+            <p class="loading-text">Loading employees...</p>
           </div>
         </article>
 
@@ -74,6 +130,8 @@
   </main>
 
   <div id="footer-container"></div>
+  <div id="cutoff-modal-root"></div>
+  <div id="employee-edit-modal-root"></div>
 
   <script type="module" src="dashboard/dashboard.js"></script>
 </body>

@@ -76,7 +76,7 @@ const employeeEditModalTemplate = `
       <div class="employee-edit-grid">
         <label id="employee-edit-name-field" class="employee-edit-field">
           <span>Name</span>
-          <input type="text" id="employee-edit-name" autocomplete="off" required />
+          <input type="text" id="employee-edit-name" autocomplete="off" readonly />
         </label>
 
         <label id="employee-edit-position-field" class="employee-edit-field">
@@ -1005,7 +1005,8 @@ function initEmployeeEditModal(onEmployeeUpdated, getCutoffEntries) {
     positionField.classList.remove("is-hidden");
     nameInput.disabled = false;
     positionInput.disabled = false;
-    nameInput.required = true;
+    nameInput.readOnly = true;
+    nameInput.required = false;
     positionInput.required = true;
     modal.classList.remove("show");
     modal.setAttribute("aria-hidden", "true");
@@ -1044,6 +1045,7 @@ function initEmployeeEditModal(onEmployeeUpdated, getCutoffEntries) {
       positionField.classList.add("is-hidden");
       nameInput.disabled = true;
       positionInput.disabled = true;
+      nameInput.readOnly = true;
       nameInput.required = false;
       positionInput.required = false;
       nameInput.value = "";
@@ -1055,7 +1057,8 @@ function initEmployeeEditModal(onEmployeeUpdated, getCutoffEntries) {
       positionField.classList.remove("is-hidden");
       nameInput.disabled = false;
       positionInput.disabled = false;
-      nameInput.required = true;
+      nameInput.readOnly = true;
+      nameInput.required = false;
       positionInput.required = true;
       nameInput.value = employee.name || "";
       positionInput.value = employee.position || "";
@@ -1069,7 +1072,7 @@ function initEmployeeEditModal(onEmployeeUpdated, getCutoffEntries) {
     if (isBulkEdit) {
       cutoffTagInput.focus();
     } else {
-      nameInput.focus();
+      positionInput.focus();
     }
   };
 
@@ -1096,14 +1099,8 @@ function initEmployeeEditModal(onEmployeeUpdated, getCutoffEntries) {
     const isBulkEdit = activeBulkEmployeeIds.length > 1;
     if (!isBulkEdit && !activeEmployeeId) return;
 
-    const trimmedName = nameInput.value.trim();
     const trimmedPosition = positionInput.value.trim();
     const selectedTag = String(cutoffTagInput.value || "").trim();
-
-    if (!isBulkEdit && !trimmedName) {
-      alert("Name is required.");
-      return;
-    }
 
     if (!isBulkEdit && !trimmedPosition) {
       alert("Position is required.");
@@ -1138,7 +1135,6 @@ function initEmployeeEditModal(onEmployeeUpdated, getCutoffEntries) {
         );
       } else {
         const updated = await updateEmployeeInSupabase(activeEmployeeId, {
-          name: trimmedName,
           position: trimmedPosition,
           cutoff_tag: selectedTag,
         });

@@ -605,8 +605,14 @@ body.dashboard-page {
   color: rgba(11, 28, 59, 0.74);
 }
 
+.employee-header-status,
+.employee-header-action {
+  justify-self: center;
+  text-align: center;
+}
+
 .employee-status-pill {
-  justify-self: start;
+  justify-self: center;
   border-radius: 999px;
   padding: 3px 10px;
   font-size: 0.72rem;
@@ -618,6 +624,8 @@ body.dashboard-page {
 .employee-item-actions {
   display: flex;
   align-items: center;
+  justify-content: center;
+  justify-self: center;
   gap: 8px;
 }
 

@@ -31,3 +31,16 @@ One-time repository setup:
 1. Go to `Settings` > `Pages`.
 2. Set `Source` to `GitHub Actions`.
 3. Push to `main` and wait for the `Deploy to GitHub Pages` workflow to finish.
+
+## Supabase Setup
+
+Environment variables are defined in `.env.example`.
+
+1. Copy `.env.example` to `.env`.
+2. Keep the provided project URL:
+
+	VITE_SUPABASE_URL=https://mfyxuhitvjsfebnqmqkr.supabase.co
+
+3. Add your public anon key from Supabase:
+
+	VITE_SUPABASE_ANON_KEY=your_anon_key_here

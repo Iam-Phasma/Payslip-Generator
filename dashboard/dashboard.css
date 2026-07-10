@@ -1,5 +1,6 @@
 body.dashboard-page {
-  --header-height: 64px;
+  --header-base-height: 64px;
+  --header-height: var(--header-base-height);
   --footer-height: 56px;
   height: 100vh;
   overflow: hidden;

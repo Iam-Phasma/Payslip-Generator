@@ -1,3 +1,4 @@
+import "./functions/server-status-banner.js";
 import { initFunctionTab } from "./functions/cutoff.js";
 import { initEmployeesTab } from "./functions/employees.js";
 import {

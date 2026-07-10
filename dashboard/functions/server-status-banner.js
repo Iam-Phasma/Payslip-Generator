@@ -217,7 +217,7 @@ async function checkServerHealth() {
     }
 
     setUnhealthyState(
-      "Project is Paused. The backend is temporarily unavailable.",
+      "The project is paused, and the backend is temporarily unavailable.",
     );
   } catch (error) {
     if (navigator.onLine === false) {
@@ -228,7 +228,7 @@ async function checkServerHealth() {
     }
 
     setUnhealthyState(
-      "Project is Paused. The backend is temporarily unavailable.",
+      "The project is paused, and the backend is temporarily unavailable.",
     );
     console.error(error);
   } finally {

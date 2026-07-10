@@ -27,8 +27,8 @@ body.dashboard-page::before {
 }
 
 .dashboard-page .header-user-btn {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.36);
+  background: transparent;
+  border-color: transparent;
   color: #ffffff;
   box-shadow: none;
 }

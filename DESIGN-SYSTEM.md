@@ -1,4 +1,4 @@
-# Design System — Travel Authority Archive
+# Design System — CHEDRO IV COS Payslip Generator
 
 A complete reference for all visual and UI conventions used in this project. Copy tokens, classes, and patterns into new projects.
 

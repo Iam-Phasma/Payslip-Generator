@@ -1,6 +1,6 @@
 # Payslip-Generator
 
-Dashboard shell scaffold based on the Travel Authority Archive design system.
+Dashboard shell scaffold based on the CHEDRO IV COS Payslip Generator design system.
 
 ## Local Development
 

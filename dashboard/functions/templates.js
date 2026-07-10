@@ -17,7 +17,7 @@ export const headerTemplate = `
         <img src="${bagongPilipinasLogo}" alt="Bagong Pilipinas logo" class="sticky-header-logo sticky-header-logo--secondary">
       </div>
       <div class="sticky-header-title-wrapper">
-        <h1 class="sticky-header-title">CHEDRO IV Payslip Generator</h1>
+        <h1 class="sticky-header-title">CHEDRO IV COS Payslip Generator</h1>
         <p class="header-date" id="header-date"></p>
       </div>
     </div>

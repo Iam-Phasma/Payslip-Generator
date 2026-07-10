@@ -17,7 +17,7 @@ export const headerTemplate = `
         <img src="${bagongPilipinasLogo}" alt="Bagong Pilipinas logo" class="sticky-header-logo sticky-header-logo--secondary">
       </div>
       <div class="sticky-header-title-wrapper">
-        <h1 class="sticky-header-title">CHEDRO IV COS Payslip Generator</h1>
+        <h1 class="sticky-header-title">CHEDRO IV Payslip Generator</h1>
         <p class="header-date" id="header-date"></p>
       </div>
     </div>
@@ -33,7 +33,7 @@ export const headerTemplate = `
       <div id="header-popup-panel" class="header-popup-panel" aria-hidden="true">
         <div class="header-popup-content">
           <button class="header-popup-option" type="button">Settings</button>
-          <button class="header-popup-option" type="button">Log Out</button>
+          <button id="header-logout-btn" class="header-popup-option" type="button">Log Out</button>
         </div>
       </div>
     </div>

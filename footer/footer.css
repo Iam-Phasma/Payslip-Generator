@@ -4,15 +4,13 @@
 }
 
 .gov-footer {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
+    margin-top: auto;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
     padding: 18px 0;
-    background: #2f6fe4;
-    border-top: 1px solid rgba(255, 255, 255, 0.24);
-    z-index: 300;
+    background: #ffffff;
+    border-top: 1px solid rgba(11, 28, 59, 0.08);
 }
 
 .login-page .gov-footer {
@@ -44,7 +42,7 @@
     margin: 0;
     font-size: 0.82rem;
     line-height: 1.55;
-    color: rgba(228, 239, 255, 0.9);
+    color: rgba(11, 28, 59, 0.68);
 }
 
 .footer-links {
@@ -64,7 +62,7 @@
     border-radius: 0;
     border: none;
     background: transparent;
-    color: #eaf2ff;
+    color: var(--sea);
     font-size: 0.78rem;
     font-weight: 500;
     text-decoration: none;
@@ -78,7 +76,7 @@
 }
 
 .footer-links a:hover {
-    color: #ffffff;
+    color: var(--hover-sea);
     text-decoration: underline;
 }
 
@@ -91,7 +89,7 @@
 
 .footer-copyright {
     font-size: 0.76rem;
-    color: rgba(208, 225, 255, 0.88);
+    color: rgba(11, 28, 59, 0.52);
 }
 
 @media (max-width: 640px) {

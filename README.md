@@ -30,7 +30,12 @@ One-time repository setup:
 
 1. Go to `Settings` > `Pages`.
 2. Set `Source` to `GitHub Actions`.
-3. Push to `main` and wait for the `Deploy to GitHub Pages` workflow to finish.
+3. Go to `Settings` > `Secrets and variables` > `Actions` and add:
+
+	- `VITE_SUPABASE_URL`
+	- `VITE_SUPABASE_ANON_KEY`
+
+4. Push to `main` and wait for the `Deploy to GitHub Pages` workflow to finish.
 
 ## Supabase Setup
 

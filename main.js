@@ -183,7 +183,10 @@ const handleLogin = async () => {
   }
 
   if (!supabaseUrl || !supabaseKey) {
-    showStatus("Missing Supabase configuration. Check your .env values.", "error");
+    const missing = [];
+    if (!supabaseUrl) missing.push("VITE_SUPABASE_URL");
+    if (!supabaseKey) missing.push("VITE_SUPABASE_ANON_KEY");
+    showStatus(`Missing Supabase configuration: ${missing.join(", ")}.`, "error");
     return;
   }
 

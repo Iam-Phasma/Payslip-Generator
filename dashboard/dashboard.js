@@ -1,4 +1,5 @@
 import "./functions/server-status-banner.js";
+import { clearLocalSession, ensureValidSession } from "./functions/auth-session.js";
 import { initFunctionTab } from "./functions/cutoff.js";
 import { initEmployeesTab } from "./functions/employees.js";
 import {
@@ -18,18 +19,16 @@ import {
 
 const LOGIN_PATH = `${import.meta.env.BASE_URL}index.html`;
 
-function hasUnexpiredLocalSession() {
-  const accessToken = localStorage.getItem("supabase_access_token") || "";
-  const expiresAt = Number(localStorage.getItem("supabase_expires_at") || "0");
-  const nowInSeconds = Math.floor(Date.now() / 1000);
-
-  if (!accessToken) return false;
-  if (!Number.isFinite(expiresAt) || expiresAt <= 0) return false;
-  return expiresAt > nowInSeconds;
-}
-
-(function initDashboardShell() {
-  if (!hasUnexpiredLocalSession()) {
+(async function initDashboardShell() {
+  try {
+    const session = await ensureValidSession({ validateIfUnexpired: true });
+    if (!session?.accessToken) {
+      clearLocalSession();
+      window.location.replace(LOGIN_PATH);
+      return;
+    }
+  } catch {
+    clearLocalSession();
     window.location.replace(LOGIN_PATH);
     return;
   }

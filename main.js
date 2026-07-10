@@ -1,3 +1,9 @@
+import {
+  clearLocalSession,
+  ensureValidSession,
+  persistSession,
+} from "./dashboard/functions/auth-session.js";
+
 const loginStatus = document.getElementById("login-status");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
@@ -125,40 +131,18 @@ const fetchUserProfile = async ({ userId, accessToken, supabaseUrl, supabaseKey 
   return Array.isArray(rows) ? rows[0] || null : null;
 };
 
-const persistSession = (sessionPayload) => {
-  const accessToken = sessionPayload?.access_token || "";
-  const refreshToken = sessionPayload?.refresh_token || "";
-  const expiresAt = Number(sessionPayload?.expires_at || 0);
-  const user = sessionPayload?.user || null;
+const tryRedirectIfAlreadyLoggedIn = async () => {
+  try {
+    const session = await ensureValidSession({ validateIfUnexpired: true });
+    if (session?.accessToken) {
+      window.location.replace(DASHBOARD_PATH);
+      return;
+    }
+  } catch {
+    // Ignore and continue showing the login form.
+  }
 
-  if (accessToken) {
-    localStorage.setItem("supabase_access_token", accessToken);
-  }
-  if (refreshToken) {
-    localStorage.setItem("supabase_refresh_token", refreshToken);
-  }
-  if (Number.isFinite(expiresAt) && expiresAt > 0) {
-    localStorage.setItem("supabase_expires_at", String(expiresAt));
-  }
-  if (user) {
-    localStorage.setItem("supabase_user", JSON.stringify(user));
-  }
-};
-
-const hasUnexpiredLocalSession = () => {
-  const accessToken = localStorage.getItem("supabase_access_token") || "";
-  const expiresAt = Number(localStorage.getItem("supabase_expires_at") || "0");
-  const nowInSeconds = Math.floor(Date.now() / 1000);
-
-  if (!accessToken) return false;
-  if (!Number.isFinite(expiresAt) || expiresAt <= 0) return false;
-  return expiresAt > nowInSeconds;
-};
-
-const tryRedirectIfAlreadyLoggedIn = () => {
-  if (hasUnexpiredLocalSession()) {
-    window.location.replace(DASHBOARD_PATH);
-  }
+  clearLocalSession();
 };
 
 const showStatus = (message, type = "neutral") => {
@@ -264,4 +248,4 @@ if (loginBtn) {
   });
 });
 
-tryRedirectIfAlreadyLoggedIn();
+void tryRedirectIfAlreadyLoggedIn();

@@ -1,3 +1,5 @@
+import { clearLocalSession, signOutSession } from "./auth-session.js";
+
 export function initHeaderDate() {
   const dateElement = document.getElementById("header-date");
   if (!dateElement) return;
@@ -33,16 +35,10 @@ export function initUserMenu() {
   });
 
   if (logoutButton) {
-    logoutButton.addEventListener("click", () => {
-      const keysToClear = [
-        "supabase_access_token",
-        "supabase_refresh_token",
-        "supabase_expires_at",
-        "supabase_user",
-        "admin_session_token",
-      ];
-
-      keysToClear.forEach((key) => localStorage.removeItem(key));
+    logoutButton.addEventListener("click", async () => {
+      logoutButton.disabled = true;
+      await signOutSession();
+      clearLocalSession();
       popup.classList.remove("show");
       popup.setAttribute("aria-hidden", "true");
       window.location.replace("../index.html");

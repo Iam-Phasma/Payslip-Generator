@@ -1,19 +1,19 @@
-export function getSupabaseConfig() {
-  const supabaseUrl =
-    import.meta.env.VITE_SUPABASE_URL || import.meta.env.VITE_SUPABASE_PROJECT_URL || "";
-  const supabaseKey =
-    import.meta.env.VITE_SUPABASE_ANON_KEY ||
-    import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
-    import.meta.env.VITE_SUPABASE_KEY ||
-    "";
+import {
+  clearLocalSession,
+  ensureValidSession,
+  getPublicSupabaseConfig,
+} from "./auth-session.js";
 
-  return {
-    supabaseUrl,
-    supabaseKey,
-  };
+export function getSupabaseConfig() {
+  return getPublicSupabaseConfig();
 }
 
 const SUPABASE_REQUEST_TIMEOUT_MS = 8_000;
+const LOGIN_PATH = `${import.meta.env.BASE_URL}index.html`;
+
+function redirectToLogin() {
+  window.location.replace(LOGIN_PATH);
+}
 
 async function fetchWithTimeout(url, options = {}) {
   const controller = new AbortController();
@@ -67,8 +67,32 @@ async function supabaseRequest(url, options = {}, requestLabel = "Request") {
   );
 }
 
+async function getUserAccessTokenOrThrow() {
+  const session = await ensureValidSession();
+  const accessToken = String(session?.accessToken || "").trim();
+
+  if (!accessToken) {
+    clearLocalSession();
+    redirectToLogin();
+    throw new Error("Your session has expired. Please sign in again.");
+  }
+
+  return accessToken;
+}
+
+async function throwIfUnauthorized(response, requestLabel) {
+  if (response.status !== 401) {
+    return;
+  }
+
+  clearLocalSession();
+  redirectToLogin();
+  throw new Error(`${requestLabel} failed: your session is invalid or expired. Please sign in again.`);
+}
+
 export async function fetchCutoffListFromSupabase() {
   const { supabaseUrl, supabaseKey } = getSupabaseConfig();
+  const accessToken = await getUserAccessTokenOrThrow();
 
   if (!supabaseUrl || !supabaseKey) {
     throw new Error(
@@ -87,7 +111,7 @@ export async function fetchCutoffListFromSupabase() {
     {
     headers: {
       apikey: supabaseKey,
-      Authorization: `Bearer ${supabaseKey}`,
+      Authorization: `Bearer ${accessToken}`,
       Accept: "application/json",
       "Accept-Profile": "public",
       "Content-Profile": "public",
@@ -95,6 +119,8 @@ export async function fetchCutoffListFromSupabase() {
     },
     "Cut off load",
   );
+
+  await throwIfUnauthorized(response, "Cut off load");
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -106,6 +132,7 @@ export async function fetchCutoffListFromSupabase() {
 
 export async function createCutoffInSupabase(payload) {
   const { supabaseUrl, supabaseKey } = getSupabaseConfig();
+  const accessToken = await getUserAccessTokenOrThrow();
 
   if (!supabaseUrl || !supabaseKey) {
     throw new Error("Supabase credentials are missing.");
@@ -118,7 +145,7 @@ export async function createCutoffInSupabase(payload) {
     method: "POST",
     headers: {
       apikey: supabaseKey,
-      Authorization: `Bearer ${supabaseKey}`,
+      Authorization: `Bearer ${accessToken}`,
       Accept: "application/json",
       "Content-Type": "application/json",
       Prefer: "return=representation",
@@ -128,6 +155,8 @@ export async function createCutoffInSupabase(payload) {
     },
     "Cut off create",
   );
+
+  await throwIfUnauthorized(response, "Cut off create");
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -140,6 +169,7 @@ export async function createCutoffInSupabase(payload) {
 
 export async function updateCutoffInSupabase(cutoffId, payload) {
   const { supabaseUrl, supabaseKey } = getSupabaseConfig();
+  const accessToken = await getUserAccessTokenOrThrow();
 
   if (!supabaseUrl || !supabaseKey) {
     throw new Error("Supabase credentials are missing.");
@@ -152,7 +182,7 @@ export async function updateCutoffInSupabase(cutoffId, payload) {
     method: "PATCH",
     headers: {
       apikey: supabaseKey,
-      Authorization: `Bearer ${supabaseKey}`,
+      Authorization: `Bearer ${accessToken}`,
       Accept: "application/json",
       "Content-Type": "application/json",
       Prefer: "return=representation",
@@ -162,6 +192,8 @@ export async function updateCutoffInSupabase(cutoffId, payload) {
     },
     "Cut off update",
   );
+
+  await throwIfUnauthorized(response, "Cut off update");
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -174,6 +206,7 @@ export async function updateCutoffInSupabase(cutoffId, payload) {
 
 export async function deleteCutoffInSupabase(cutoffId) {
   const { supabaseUrl, supabaseKey } = getSupabaseConfig();
+  const accessToken = await getUserAccessTokenOrThrow();
 
   if (!supabaseUrl || !supabaseKey) {
     throw new Error("Supabase credentials are missing.");
@@ -186,13 +219,15 @@ export async function deleteCutoffInSupabase(cutoffId) {
     method: "DELETE",
     headers: {
       apikey: supabaseKey,
-      Authorization: `Bearer ${supabaseKey}`,
+      Authorization: `Bearer ${accessToken}`,
       Accept: "application/json",
       "Content-Profile": "public",
     },
     },
     "Cut off delete",
   );
+
+  await throwIfUnauthorized(response, "Cut off delete");
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -202,6 +237,7 @@ export async function deleteCutoffInSupabase(cutoffId) {
 
 export async function fetchEmployeesFromSupabase() {
   const { supabaseUrl, supabaseKey } = getSupabaseConfig();
+  const accessToken = await getUserAccessTokenOrThrow();
 
   if (!supabaseUrl || !supabaseKey) {
     throw new Error(
@@ -220,7 +256,7 @@ export async function fetchEmployeesFromSupabase() {
     {
     headers: {
       apikey: supabaseKey,
-      Authorization: `Bearer ${supabaseKey}`,
+      Authorization: `Bearer ${accessToken}`,
       Accept: "application/json",
       "Accept-Profile": "public",
       "Content-Profile": "public",
@@ -228,6 +264,8 @@ export async function fetchEmployeesFromSupabase() {
     },
     "Employees load",
   );
+
+  await throwIfUnauthorized(response, "Employees load");
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -239,6 +277,7 @@ export async function fetchEmployeesFromSupabase() {
 
 export async function updateEmployeeInSupabase(employeeId, payload) {
   const { supabaseUrl, supabaseKey } = getSupabaseConfig();
+  const accessToken = await getUserAccessTokenOrThrow();
 
   if (!supabaseUrl || !supabaseKey) {
     throw new Error("Supabase credentials are missing.");
@@ -251,7 +290,7 @@ export async function updateEmployeeInSupabase(employeeId, payload) {
     method: "PATCH",
     headers: {
       apikey: supabaseKey,
-      Authorization: `Bearer ${supabaseKey}`,
+      Authorization: `Bearer ${accessToken}`,
       Accept: "application/json",
       "Content-Type": "application/json",
       Prefer: "return=representation",
@@ -261,6 +300,8 @@ export async function updateEmployeeInSupabase(employeeId, payload) {
     },
     "Employees update",
   );
+
+  await throwIfUnauthorized(response, "Employees update");
 
   if (!response.ok) {
     const errorText = await response.text();

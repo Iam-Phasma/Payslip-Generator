@@ -1,51 +1,48 @@
-# Payslip-Generator
+# Payslip Generator (Internal)
 
-Dashboard shell scaffold based on the CHEDRO IV COS Payslip Generator design system.
+Internal payroll support system for generating and managing payslip data.
+
+## Internal Use Only
+
+This repository is for authorized internal users only.
+
+- Do not publish this project as a public website.
+- Do not expose employee data, payroll data, or environment credentials.
+- Do not share `.env` values outside approved internal channels.
 
 ## Local Development
 
 1. Install dependencies:
 
-	npm install
+   npm install
 
-2. Start dev server:
+2. Start the development server:
 
-	npm run dev
+   npm run dev
 
-## Production Build
+## Build
 
-1. Build:
+1. Create a production build:
 
-	npm run build
+   npm run build
 
-2. Preview build:
+2. Preview the build locally:
 
-	npm run preview
+   npm run preview
 
-## GitHub Pages Deployment
-
-This project includes an Actions workflow at `.github/workflows/deploy-pages.yml` that builds and deploys to GitHub Pages on every push to `main`.
-
-One-time repository setup:
-
-1. Go to `Settings` > `Pages`.
-2. Set `Source` to `GitHub Actions`.
-3. Go to `Settings` > `Secrets and variables` > `Actions` and add:
-
-	- `VITE_SUPABASE_URL`
-	- `VITE_SUPABASE_ANON_KEY`
-
-4. Push to `main` and wait for the `Deploy to GitHub Pages` workflow to finish.
-
-## Supabase Setup
+## Environment Configuration
 
 Environment variables are defined in `.env.example`.
 
 1. Copy `.env.example` to `.env`.
-2. Keep the provided project URL:
+2. Configure required values for your internal environment:
 
-	VITE_SUPABASE_URL=https://mfyxuhitvjsfebnqmqkr.supabase.co
+   VITE_SUPABASE_URL=your_internal_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_internal_supabase_anon_key
 
-3. Add your public anon key from Supabase:
+## Deployment
 
-	VITE_SUPABASE_ANON_KEY=your_anon_key_here
+Deploy only to approved internal infrastructure or private hosting targets.
+
+- If CI/CD is used, ensure repository visibility, environment variables, and deployment targets remain private.
+- Coordinate release and access control with your internal admin/IT team.

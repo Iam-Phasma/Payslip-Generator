@@ -1,4 +1,4 @@
-import { getSupabaseConfig } from "./supabase.js";
+import { getPublicSupabaseConfig } from "./auth-session.js";
 
 const BANNER_ID = "pila-server-status-banner";
 const CHECK_INTERVAL_MS = 30_000;
@@ -20,7 +20,7 @@ const bannerState = {
 };
 
 function getSupabaseHealthConfig() {
-  const { supabaseUrl, supabaseKey } = getSupabaseConfig();
+  const { supabaseUrl, supabaseKey } = getPublicSupabaseConfig();
   return {
     supabaseUrl: String(supabaseUrl || "").trim().replace(/\/$/, ""),
     supabaseKey: String(supabaseKey || "").trim(),
@@ -203,7 +203,6 @@ async function checkServerHealth() {
       method: "GET",
       headers: {
         apikey: supabaseKey,
-        Authorization: `Bearer ${supabaseKey}`,
         Accept: "application/json",
         "Accept-Profile": "public",
       },

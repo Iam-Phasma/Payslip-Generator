@@ -16,7 +16,7 @@ import {
   injectFragment,
 } from "./functions/templates.js";
 
-const LOGIN_PATH = "../index.html";
+const LOGIN_PATH = `${import.meta.env.BASE_URL}index.html`;
 
 function hasUnexpiredLocalSession() {
   const accessToken = localStorage.getItem("supabase_access_token") || "";

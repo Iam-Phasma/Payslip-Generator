@@ -9,7 +9,7 @@ const loginBtnLottie = document.getElementById("login-btn-lottie");
 let showLottieDelayTimer = null;
 const LOADER_DELAY_MS = 1200;
 const AUTH_REQUEST_TIMEOUT_MS = 15000;
-const DASHBOARD_PATH = "dashboard/dashboard.html";
+const DASHBOARD_PATH = `${import.meta.env.BASE_URL}dashboard/dashboard.html`;
 
 const setLoginLoading = (loading) => {
   loginBtn.disabled = loading;

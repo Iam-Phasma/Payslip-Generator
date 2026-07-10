@@ -194,17 +194,25 @@ async function checkServerHealth() {
   const timeoutId = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
   try {
-    const response = await fetch(`${supabaseUrl}/auth/v1/health`, {
+    const query = new URLSearchParams({
+      select: "id",
+      limit: "1",
+    });
+
+    const response = await fetch(`${supabaseUrl}/rest/v1/cutoff_list?${query.toString()}`, {
       method: "GET",
       headers: {
         apikey: supabaseKey,
         Authorization: `Bearer ${supabaseKey}`,
+        Accept: "application/json",
+        "Accept-Profile": "public",
       },
       cache: "no-store",
       signal: controller.signal,
     });
 
-    if (response.ok) {
+    // Any HTTP response means the host is reachable. Only network/timeout errors should mark it unavailable.
+    if (response.ok || [401, 403, 404].includes(response.status)) {
       setHealthyState();
       return;
     }
@@ -217,7 +225,7 @@ async function checkServerHealth() {
     }
 
     setUnhealthyState(
-      "The project is paused, and the backend is temporarily unavailable.",
+      "The backend is reachable but returned an unexpected response. Check Supabase table access and API policies.",
     );
   } catch (error) {
     if (navigator.onLine === false) {
@@ -228,7 +236,7 @@ async function checkServerHealth() {
     }
 
     setUnhealthyState(
-      "The project is paused, and the backend is temporarily unavailable.",
+      "Pila cannot reach Supabase right now. Check internet, DNS, or project URL configuration.",
     );
     console.error(error);
   } finally {

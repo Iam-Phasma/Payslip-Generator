@@ -13,6 +13,60 @@ export function getSupabaseConfig() {
   };
 }
 
+const SUPABASE_REQUEST_TIMEOUT_MS = 8_000;
+
+async function fetchWithTimeout(url, options = {}) {
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), SUPABASE_REQUEST_TIMEOUT_MS);
+
+  try {
+    return await fetch(url, {
+      ...options,
+      cache: "no-store",
+      signal: controller.signal,
+    });
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+}
+
+async function supabaseRequest(url, options = {}, requestLabel = "Request") {
+  let lastError = null;
+
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      return await fetchWithTimeout(url, options);
+    } catch (error) {
+      lastError = error;
+
+      if (error instanceof DOMException && error.name === "AbortError") {
+        throw new Error(`${requestLabel} timed out. Supabase took too long to respond.`);
+      }
+
+      if (!(error instanceof TypeError)) {
+        throw error;
+      }
+
+      if (attempt === 0) {
+        await new Promise((resolve) => window.setTimeout(resolve, 400));
+      }
+    }
+  }
+
+  const host = (() => {
+    try {
+      return new URL(url).host;
+    } catch {
+      return "your Supabase project";
+    }
+  })();
+
+  throw new Error(
+    `${requestLabel} failed due to a network error while reaching ${host}. Check internet, DNS, or VITE_SUPABASE_URL.`,
+    { cause: lastError },
+  );
+}
+
 export async function fetchCutoffListFromSupabase() {
   const { supabaseUrl, supabaseKey } = getSupabaseConfig();
 
@@ -28,7 +82,9 @@ export async function fetchCutoffListFromSupabase() {
     order: "tag.asc",
   });
 
-  const response = await fetch(`${baseUrl}/rest/v1/cutoff_list?${query.toString()}`, {
+  const response = await supabaseRequest(
+    `${baseUrl}/rest/v1/cutoff_list?${query.toString()}`,
+    {
     headers: {
       apikey: supabaseKey,
       Authorization: `Bearer ${supabaseKey}`,
@@ -36,7 +92,9 @@ export async function fetchCutoffListFromSupabase() {
       "Accept-Profile": "public",
       "Content-Profile": "public",
     },
-  });
+    },
+    "Cut off load",
+  );
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -54,7 +112,9 @@ export async function createCutoffInSupabase(payload) {
   }
 
   const baseUrl = String(supabaseUrl).replace(/\/$/, "");
-  const response = await fetch(`${baseUrl}/rest/v1/cutoff_list`, {
+  const response = await supabaseRequest(
+    `${baseUrl}/rest/v1/cutoff_list`,
+    {
     method: "POST",
     headers: {
       apikey: supabaseKey,
@@ -65,7 +125,9 @@ export async function createCutoffInSupabase(payload) {
       "Content-Profile": "public",
     },
     body: JSON.stringify(payload),
-  });
+    },
+    "Cut off create",
+  );
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -84,7 +146,9 @@ export async function updateCutoffInSupabase(cutoffId, payload) {
   }
 
   const baseUrl = String(supabaseUrl).replace(/\/$/, "");
-  const response = await fetch(`${baseUrl}/rest/v1/cutoff_list?id=eq.${encodeURIComponent(cutoffId)}`, {
+  const response = await supabaseRequest(
+    `${baseUrl}/rest/v1/cutoff_list?id=eq.${encodeURIComponent(cutoffId)}`,
+    {
     method: "PATCH",
     headers: {
       apikey: supabaseKey,
@@ -95,7 +159,9 @@ export async function updateCutoffInSupabase(cutoffId, payload) {
       "Content-Profile": "public",
     },
     body: JSON.stringify(payload),
-  });
+    },
+    "Cut off update",
+  );
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -114,7 +180,9 @@ export async function deleteCutoffInSupabase(cutoffId) {
   }
 
   const baseUrl = String(supabaseUrl).replace(/\/$/, "");
-  const response = await fetch(`${baseUrl}/rest/v1/cutoff_list?id=eq.${encodeURIComponent(cutoffId)}`, {
+  const response = await supabaseRequest(
+    `${baseUrl}/rest/v1/cutoff_list?id=eq.${encodeURIComponent(cutoffId)}`,
+    {
     method: "DELETE",
     headers: {
       apikey: supabaseKey,
@@ -122,7 +190,9 @@ export async function deleteCutoffInSupabase(cutoffId) {
       Accept: "application/json",
       "Content-Profile": "public",
     },
-  });
+    },
+    "Cut off delete",
+  );
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -145,7 +215,9 @@ export async function fetchEmployeesFromSupabase() {
     order: "is_active.desc,name.asc",
   });
 
-  const response = await fetch(`${baseUrl}/rest/v1/employees?${query.toString()}`, {
+  const response = await supabaseRequest(
+    `${baseUrl}/rest/v1/employees?${query.toString()}`,
+    {
     headers: {
       apikey: supabaseKey,
       Authorization: `Bearer ${supabaseKey}`,
@@ -153,7 +225,9 @@ export async function fetchEmployeesFromSupabase() {
       "Accept-Profile": "public",
       "Content-Profile": "public",
     },
-  });
+    },
+    "Employees load",
+  );
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -171,7 +245,9 @@ export async function updateEmployeeInSupabase(employeeId, payload) {
   }
 
   const baseUrl = String(supabaseUrl).replace(/\/$/, "");
-  const response = await fetch(`${baseUrl}/rest/v1/employees?id=eq.${encodeURIComponent(employeeId)}`, {
+  const response = await supabaseRequest(
+    `${baseUrl}/rest/v1/employees?id=eq.${encodeURIComponent(employeeId)}`,
+    {
     method: "PATCH",
     headers: {
       apikey: supabaseKey,
@@ -182,7 +258,9 @@ export async function updateEmployeeInSupabase(employeeId, payload) {
       "Content-Profile": "public",
     },
     body: JSON.stringify(payload),
-  });
+    },
+    "Employees update",
+  );
 
   if (!response.ok) {
     const errorText = await response.text();

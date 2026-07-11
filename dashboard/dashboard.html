@@ -52,7 +52,7 @@
         </article>
 
         <article class="dash-tab-pane" id="tab-function">
-          <div class="panel function-panel-shell">
+          <div class="function-panel-shell">
             <div class="function-panel-head">
               <div>
                 <h2>Cut-Off Cycle Templates</h2>
@@ -69,6 +69,25 @@
                 <span class="function-cutoff-header-action">Actions</span>
               </div>
               <p class="loading-text">Loading cut off list...</p>
+            </div>
+
+            <div class="function-panel-head function-panel-head--spaced">
+              <div>
+                <h2>Signatories</h2>
+                <span class="status">Manage prepared, checked, and noted by signatories.</span>
+              </div>
+              <button id="signatory-add-btn" class="function-add-btn" type="button">New</button>
+            </div>
+
+            <div class="function-signatory-list" id="signatories-list">
+              <div class="function-signatory-table-header">
+                <span class="function-signatory-header-tag">Tag</span>
+                <span class="function-signatory-header-name">PRP</span>
+                <span class="function-signatory-header-name">CHK</span>
+                <span class="function-signatory-header-name">NTD</span>
+                <span class="function-signatory-header-action">Actions</span>
+              </div>
+              <p class="loading-text">Loading signatories...</p>
             </div>
           </div>
         </article>
@@ -214,6 +233,7 @@
   <div id="footer-container"></div>
   <div id="cutoff-modal-root"></div>
   <div id="employee-edit-modal-root"></div>
+  <div id="signatory-modal-root"></div>
 
   <script type="module" src="./dashboard.js"></script>
 </body>

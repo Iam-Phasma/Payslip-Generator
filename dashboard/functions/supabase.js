@@ -317,3 +317,148 @@ export async function updateEmployeeInSupabase(employeeId, payload) {
     "Employees update did not return a row. This usually means RLS blocked the update or the record is not visible to your API role.",
   );
 }
+
+export async function fetchSignatoriesFromSupabase() {
+  const { supabaseUrl, supabaseKey } = getSupabaseConfig();
+  const accessToken = await getUserAccessTokenOrThrow();
+
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error(
+      "Missing Supabase config. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY (or VITE_SUPABASE_PUBLISHABLE_KEY) in .env.",
+    );
+  }
+
+  const baseUrl = String(supabaseUrl).replace(/\/$/, "");
+  const query = new URLSearchParams({
+    select: "*",
+    order: "tag.asc",
+  });
+
+  const response = await supabaseRequest(
+    `${baseUrl}/rest/v1/signatories?${query.toString()}`,
+    {
+      headers: {
+        apikey: supabaseKey,
+        Authorization: `Bearer ${accessToken}`,
+        Accept: "application/json",
+        "Accept-Profile": "public",
+        "Content-Profile": "public",
+      },
+    },
+    "Signatories load",
+  );
+
+  await throwIfUnauthorized(response, "Signatories load");
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Signatories load failed (${response.status}): ${errorText || "Unknown error"}`);
+  }
+
+  return response.json();
+}
+
+export async function createSignatoryInSupabase(payload) {
+  const { supabaseUrl, supabaseKey } = getSupabaseConfig();
+  const accessToken = await getUserAccessTokenOrThrow();
+
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error("Supabase credentials are missing.");
+  }
+
+  const baseUrl = String(supabaseUrl).replace(/\/$/, "");
+  const response = await supabaseRequest(
+    `${baseUrl}/rest/v1/signatories`,
+    {
+      method: "POST",
+      headers: {
+        apikey: supabaseKey,
+        Authorization: `Bearer ${accessToken}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+        "Content-Profile": "public",
+      },
+      body: JSON.stringify(payload),
+    },
+    "Signatories create",
+  );
+
+  await throwIfUnauthorized(response, "Signatories create");
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Signatories create failed (${response.status}): ${errorText || "Unknown error"}`);
+  }
+
+  const rows = await response.json();
+  return Array.isArray(rows) ? rows[0] : null;
+}
+
+export async function updateSignatoryInSupabase(signatoryId, payload) {
+  const { supabaseUrl, supabaseKey } = getSupabaseConfig();
+  const accessToken = await getUserAccessTokenOrThrow();
+
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error("Supabase credentials are missing.");
+  }
+
+  const baseUrl = String(supabaseUrl).replace(/\/$/, "");
+  const response = await supabaseRequest(
+    `${baseUrl}/rest/v1/signatories?id=eq.${encodeURIComponent(signatoryId)}`,
+    {
+      method: "PATCH",
+      headers: {
+        apikey: supabaseKey,
+        Authorization: `Bearer ${accessToken}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+        "Content-Profile": "public",
+      },
+      body: JSON.stringify(payload),
+    },
+    "Signatories update",
+  );
+
+  await throwIfUnauthorized(response, "Signatories update");
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Signatories update failed (${response.status}): ${errorText || "Unknown error"}`);
+  }
+
+  const rows = await response.json();
+  return Array.isArray(rows) ? rows[0] : null;
+}
+
+export async function deleteSignatoryInSupabase(signatoryId) {
+  const { supabaseUrl, supabaseKey } = getSupabaseConfig();
+  const accessToken = await getUserAccessTokenOrThrow();
+
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error("Supabase credentials are missing.");
+  }
+
+  const baseUrl = String(supabaseUrl).replace(/\/$/, "");
+  const response = await supabaseRequest(
+    `${baseUrl}/rest/v1/signatories?id=eq.${encodeURIComponent(signatoryId)}`,
+    {
+      method: "DELETE",
+      headers: {
+        apikey: supabaseKey,
+        Authorization: `Bearer ${accessToken}`,
+        Accept: "application/json",
+        "Content-Profile": "public",
+      },
+    },
+    "Signatories delete",
+  );
+
+  await throwIfUnauthorized(response, "Signatories delete");
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Signatories delete failed (${response.status}): ${errorText || "Unknown error"}`);
+  }
+}

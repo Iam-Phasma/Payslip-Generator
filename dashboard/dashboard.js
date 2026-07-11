@@ -2,6 +2,7 @@ import "./functions/server-status-banner.js";
 import { clearLocalSession, ensureValidSession } from "./functions/auth-session.js";
 import { initFunctionTab } from "./functions/cutoff.js";
 import { initEmployeesTab } from "./functions/employees.js";
+import { initSignatoriesTab } from "./functions/signatories.js";
 import {
   initFooterYear,
   initHeaderDate,
@@ -15,6 +16,7 @@ import {
   footerTemplate,
   headerTemplate,
   injectFragment,
+  signatoryModalTemplate,
 } from "./functions/templates.js";
 
 const LOGIN_PATH = `${import.meta.env.BASE_URL}index.html`;
@@ -37,6 +39,7 @@ const LOGIN_PATH = `${import.meta.env.BASE_URL}index.html`;
   injectFragment("footer-container", footerTemplate);
   injectFragment("cutoff-modal-root", cutoffModalTemplate);
   injectFragment("employee-edit-modal-root", employeeEditModalTemplate);
+  injectFragment("signatory-modal-root", signatoryModalTemplate);
 
   initHeaderDate();
   initFooterYear();
@@ -44,5 +47,6 @@ const LOGIN_PATH = `${import.meta.env.BASE_URL}index.html`;
   initSidebarToggle();
   initTabSwitching();
   initFunctionTab();
+  initSignatoriesTab();
   initEmployeesTab();
 })();

@@ -155,3 +155,52 @@ export const cutoffModalTemplate = `
   </div>
 </div>
 `;
+
+export const signatoryModalTemplate = `
+<div id="signatory-modal" class="signatory-modal" aria-hidden="true">
+  <div class="signatory-modal-backdrop" data-signatory-modal-close></div>
+  <div class="signatory-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="signatory-modal-title">
+    <form id="signatory-form" class="signatory-form">
+      <div class="signatory-modal-header">
+        <div>
+          <h3 id="signatory-modal-title">Signatory Entry</h3>
+          <p>Create or update the signatory names for a payroll tag.</p>
+        </div>
+      </div>
+
+      <div class="signatory-modal-grid">
+        <label class="signatory-modal-field signatory-modal-field--full">
+          <span>Tag</span>
+          <input type="text" id="signatory-tag" autocomplete="off" required />
+        </label>
+
+        <label class="signatory-modal-field">
+          <span>Prepared By (PRP)</span>
+          <select id="signatory-prp" required>
+            <option value="">Select employee</option>
+          </select>
+        </label>
+
+        <label class="signatory-modal-field">
+          <span>Checked By (CHK)</span>
+          <select id="signatory-chk" required>
+            <option value="">Select employee</option>
+          </select>
+        </label>
+
+        <label class="signatory-modal-field signatory-modal-field--full">
+          <span>Noted By (NTD)</span>
+          <select id="signatory-ntd" required>
+            <option value="">Select employee</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="signatory-modal-actions">
+        <button type="button" class="signatory-modal-secondary-btn" data-signatory-modal-close>Cancel</button>
+        <button type="submit" class="signatory-modal-primary-btn">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+`;

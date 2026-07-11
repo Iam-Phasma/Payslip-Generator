@@ -257,6 +257,41 @@ body.dashboard-page::before {
   max-width: 900px;
 }
 
+.create-panel {
+  max-width: 920px;
+}
+
+.create-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.create-panel-head h2 {
+  margin: 0;
+}
+
+.create-panel-head p {
+  margin: 8px 0 0;
+  color: rgba(11, 28, 59, 0.74);
+}
+
+.create-panel-note {
+  margin-top: 14px;
+  border: 1px dashed rgba(47, 111, 228, 0.38);
+  background: rgba(47, 111, 228, 0.06);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: rgba(11, 28, 59, 0.82);
+  font-size: 0.9rem;
+}
+
+.create-panel-note span {
+  font-weight: 700;
+}
+
 .shell-panel p {
   margin-top: 10px;
   color: rgba(11, 28, 59, 0.72);

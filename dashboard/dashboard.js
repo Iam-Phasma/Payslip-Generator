@@ -1,5 +1,6 @@
 import "./functions/server-status-banner.js";
 import { clearLocalSession, ensureValidSession } from "./functions/auth-session.js";
+import { initCreateTab } from "./functions/create.js";
 import { initFunctionTab } from "./functions/cutoff.js";
 import { initEmployeesTab } from "./functions/employees.js";
 import { initSignatoriesTab } from "./functions/signatories.js";
@@ -46,6 +47,7 @@ const LOGIN_PATH = `${import.meta.env.BASE_URL}index.html`;
   initUserMenu();
   initSidebarToggle();
   initTabSwitching();
+  initCreateTab();
   initFunctionTab();
   initSignatoriesTab();
   initEmployeesTab();

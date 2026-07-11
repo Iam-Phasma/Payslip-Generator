@@ -45,9 +45,19 @@
 
       <section class="dash-content" aria-live="polite">
         <article class="dash-tab-pane active" id="tab-create">
-          <div class="panel shell-panel">
-            <h2>Create</h2>
-            <p>This tab is intentionally empty for now.</p>
+          <div class="panel shell-panel create-panel">
+            <div class="create-panel-head">
+              <div>
+                <h2>Print Layout</h2>
+                <p>Open a ready-to-print sample where 6 payslips fit on one A4 page.</p>
+              </div>
+              <button id="open-print-sample-btn" class="function-add-btn" type="button">View Printing Sample</button>
+            </div>
+
+            <div class="create-panel-note" aria-live="polite">
+              <span>Tip:</span>
+              Use browser print settings with <strong>A4</strong> and <strong>100%</strong> scale for best output.
+            </div>
           </div>
         </article>
 
